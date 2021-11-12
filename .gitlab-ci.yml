@@ -1,36 +1,22 @@
 stages:
-    - build
     - security
     - deploy
-
-# for a simple node.js build, this step is (almost) meaningless
-build_app:
-    image: node:10.9.0
-    stage: build
-    script: 
-        - npm install
-    cache:
-        paths:
-            - node_modules/
-    artifacts:
-        paths:
-            - node_modules/
 
 veracode_scan:
     image: veracode/api-wrapper-java:latest
     stage: security
     before_script:
-        - tar -zcvf upload.tar.gz app package.json package-lock.json
+        - tar -zcvf upload.tar.gz api.py
         - ls -lF
     script:
         # the scan WILL fail, so just fire and forget
         - java -jar /opt/veracode/api-wrapper.jar -vid $VERACODE_API_ID -vkey $VERACODE_API_KEY
-            -action UploadAndScan -appname "VulnImages-NodeGoat" -createprofile false
+            -action UploadAndScan -appname "VulnImages-Petshop" -createprofile false
             -filepath upload.tar.gz -version "Commit ${CI_COMMIT_SHA:0:8} - Job $CI_JOB_ID"
     allow_failure: true
 
 veracode_sca_scan:
-    image: node:10.9.0
+    image: python:3.8
     stage: security
     script:
         - curl -sSL https://download.sourceclear.com/ci.sh | sh
@@ -49,10 +35,10 @@ dockerize:
         - pip3 install awscli
     script:
         - $(aws ecr get-login --no-include-email --region us-east-2)
-        - docker build -t nodegoat:$CI_PIPELINE_ID .
-        - docker tag nodegoat:$CI_PIPELINE_ID $REPOSITORY_URL:nodegoat-latest
-        - docker tag nodegoat:$CI_PIPELINE_ID $REPOSITORY_URL:nodegoat-$CI_PIPELINE_ID
-        - docker push $REPOSITORY_URL:nodegoat-latest
-        - docker push $REPOSITORY_URL:nodegoat-$CI_PIPELINE_ID
+        - docker build -t petshop:$CI_PIPELINE_ID .
+        - docker tag petshop:$CI_PIPELINE_ID $REPOSITORY_URL:petshop-latest
+        - docker tag petshop:$CI_PIPELINE_ID $REPOSITORY_URL:petshop-$CI_PIPELINE_ID
+        - docker push $REPOSITORY_URL:petshop-latest
+        - docker push $REPOSITORY_URL:petshop-$CI_PIPELINE_ID
     after_script:
         - docker images
