@@ -1,4 +1,4 @@
-FROM ubuntu:21.04
+FROM ubuntu:20.04
 
 RUN mkdir /api
 RUN apt update; DEBIAN_FRONTEND=noninteractive apt install mariadb-server mariadb-client python3 python3-pip -y
