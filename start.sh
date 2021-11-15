@@ -1,6 +1,6 @@
 #!/bin/bash
 
-/etc/init.d/mariadb start &
+/etc/init.d/mysql start &
 sleep 5
 mysql -e "CREATE DATABASE flask_api;"
 mysql -e "CREATE USER 'petstore'@'%' IDENTIFIED BY 'Ver@c0de';"
