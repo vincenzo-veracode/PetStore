@@ -5,7 +5,10 @@ RUN apt update; DEBIAN_FRONTEND=noninteractive apt install mariadb-server mariad
 
 COPY . /api
 WORKDIR /api
+RUN chmod +x ./start.sh
 RUN pip3 install -r requirements.txt
+
+EXPOSE 5000
 
 ENTRYPOINT [ "/bin/bash" ]
 CMD ["./start.sh"]
