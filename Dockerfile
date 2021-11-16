@@ -1,8 +1,11 @@
 FROM ubuntu:21.04
 
-RUN mkdir /api
-RUN apt update; DEBIAN_FRONTEND=noninteractive apt install mariadb-server mariadb-client python3 python3-pip -y
 
+RUN apt update; DEBIAN_FRONTEND=noninteractive apt install -y apt-utils 
+RUN DEBIAN_FRONTEND=noninteractive apt install -y mariadb-server mariadb-client python3 python3-pip
+#   systemctl ??
+
+RUN mkdir /api
 COPY . /api
 WORKDIR /api
 RUN chmod +x ./start.sh
@@ -10,5 +13,6 @@ RUN pip3 install -r requirements.txt
 
 EXPOSE 5000
 
-ENTRYPOINT [ "/bin/bash" ]
-CMD ["./start.sh"]
+#ENTRYPOINT [ "/bin/bash" ]
+#CMD ["./start.sh"]
+ENTRYPOINT [ "./start.sh" ]
