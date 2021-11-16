@@ -1,8 +1,8 @@
 FROM ubuntu:20.04
 
 
-RUN apt update; DEBIAN_FRONTEND=noninteractive apt install -y apt-utils 
-RUN DEBIAN_FRONTEND=noninteractive apt install -y mariadb-server mariadb-client python3 python3-pip
+RUN apt-get update; DEBIAN_FRONTEND=noninteractive apt-get install -y apt-utils 
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mariadb-server mariadb-client python3 python3-pip
 #   systemctl ??
 
 RUN mkdir /api
