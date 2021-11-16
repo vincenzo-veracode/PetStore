@@ -10,4 +10,6 @@ mysql -e "CREATE USER 'petstore'@'localhost' IDENTIFIED BY 'Ver@c0de';"
 mysql -e "GRANT ALL ON *.* TO 'petstore'@'localhost';"
 mysql -e "flush privileges;"
 
-python3 api.py
+while true; do
+    python3 api.py
+done
