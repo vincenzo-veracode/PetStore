@@ -180,6 +180,9 @@ def createTableStructure():
     except Exception as e:
         print(e)
 
+# set debug=False to prevent memory growth/leak.  If debug=True, on every exception (?), 
+# which our scanner will cause many of, the recording of the exception seems to cause a huge spike
+# in the consumed memory
 if __name__ == "__main__":
     createTableStructure()
-    app.run(host='0.0.0.0', port=5000, debug = True)
+    app.run(host='0.0.0.0', port=5000, debug=False)
